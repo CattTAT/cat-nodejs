@@ -14,6 +14,39 @@ const imgList = [
   "Sleepy_MEOW.jpeg",
 ];
 
+const sqlite3 = require("sqlite3").verbose();
+
+const query = () => {
+  const result = {};
+  // open database in memory
+  let db = new sqlite3.Database(":memory:", (err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Connected to the in-memory SQlite database.");
+  });
+
+  // query data
+  db.serialize(function () {
+    db.each("SELECT name FROM cat", function (err, row) {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log(row.name);
+      //   result.push({ name: row.name });
+    });
+  });
+
+  // close the database connection
+  db.close((err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Close the database connection.");
+  });
+  return result;
+};
+
 const server = http.createServer((req, res) => {
   switch (req.url) {
     case "/":
@@ -33,6 +66,14 @@ const server = http.createServer((req, res) => {
           res.writeHead(200, { "Content-Type": "image/jpeg" });
           res.end(data, "base64");
         }
+      );
+      break;
+    case "/db":
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          data: query(),
+        })
       );
       break;
   }
