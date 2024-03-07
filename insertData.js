@@ -1,9 +1,8 @@
 const sqlite3 = require("sqlite3").verbose();
+const dbPath = "C:\\Users\\chinc\\cat.db";
 
 // open database in memory
-let db = new sqlite3.Database("./db/cat.db", sqlite3.OPEN_READWRITE, function (
-  err
-) {
+let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, function (err) {
   if (err) {
     return console.error(err.message);
   }
@@ -55,6 +54,7 @@ db.serialize(function () {
     //   result.push({ name: row.name });
   });
 });
+
 
 // close the database connection
 db.close((err) => {
