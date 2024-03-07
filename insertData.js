@@ -25,34 +25,13 @@ db.serialize(function () {
     console.log("insert data: ", this);
   });
 
-  db.run("INSERT INTO cat(name) VALUES(?)", ["66B"], function (err) {
-    if (err) {
-      return console.log("insert data error: ", err.message);
-    }
-    console.log("insert data: ", this);
-  });
-
-  db.run("INSERT INTO cat(name) VALUES(?)", ["55B"], function (err) {
-    if (err) {
-      return console.log("insert data error: ", err.message);
-    }
-    console.log("insert data: ", this);
-  });
-
-  db.run("INSERT INTO cat(name) VALUES(?)", ["Tree Head"], function (err) {
-    if (err) {
-      return console.log("insert data error: ", err.message);
-    }
-    console.log("insert data: ", this);
-  });
-
-  db.each("SELECT name FROM cat", function (err, row) {
+  db.all("SELECT * FROM cats", function (err, rows) {
     if (err) {
       return console.error(err.message);
     }
-    console.log(row.name);
-    //   result.push({ name: row.name });
+    console.log(rows);
   });
+
 });
 
 
