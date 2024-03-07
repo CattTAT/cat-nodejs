@@ -14,6 +14,40 @@ const imgList = [
   "Sleepy_MEOW.jpeg",
 ];
 
+const sqlite3 = require("sqlite3").verbose();
+const dbPath = "C:\\Users\\chinc\\cat.db";
+let connection = null;
+const connectDB = () => {
+  connection = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Connected to the cat.db SQlite database.");
+  });
+};
+const disconnectDB = () => {
+  connection.close((err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Close the database connection.");
+  });
+};
+
+const query = () => {
+  // query data
+  return new Promise((resolve, reject) => {
+    connection.serialize(function () {
+      connection.all("SELECT * FROM cats", function (err, rows) {
+        if (err) {
+          return reject(new Error(err.message));
+        }
+        resolve(rows);
+      });
+    });
+  });
+};
+
 const server = http.createServer((req, res) => {
   switch (req.url) {
     case "/":
@@ -34,6 +68,18 @@ const server = http.createServer((req, res) => {
           res.end(data, "base64");
         }
       );
+      break;
+    case "/meow":
+      connectDB();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      query()
+        .then((result) => {
+          res.end(JSON.stringify({ data: result }));
+        })
+        .catch((err) => {
+          res.end(JSON.stringify({ error: err.message }));
+        });
+      disconnectDB();
       break;
   }
 });
