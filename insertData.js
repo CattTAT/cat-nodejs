@@ -1,5 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
-const dbPath = "C:\\Users\\chinc\\cat.db";
+const dbPath = "database\\cat.db";
 
 // open database in memory
 let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, function (err) {
