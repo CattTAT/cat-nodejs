@@ -15,7 +15,7 @@ const imgList = [
 ];
 
 const sqlite3 = require("sqlite3").verbose();
-const dbPath = "C:\\Users\\chinc\\cat.db";
+const dbPath = "database\\cat.db";
 let connection = null;
 const connectDB = () => {
   connection = new sqlite3.Database(dbPath, (err) => {
@@ -54,7 +54,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(
         JSON.stringify({
-          data: "Meow Meow study, Meow Meow learn, Meow Meow practice, Meow Meow work hard, Meow Meow grow, Meow Meow success! test",
+          data: "Meow Meow study, Meow Meow learn, Meow Meow practice, Meow Meow work hard, Meow Meow grow, Meow Meow success! test bye bye  ",
         })
       );
       break;
